@@ -4,7 +4,7 @@ use lettre::{transport::smtp::authentication::Credentials, SmtpTransport};
 
 use crate::config;
 
-fn get_smtp_password(pass_command: &str) -> Result<String> {
+fn get_smtp_password(_pass_command: &str) -> Result<String> {
     let sh = xshell::Shell::new()?;
     let password = sh.cmd("pass").arg("purelymail.com").read()?;
     dbg!(&password);
