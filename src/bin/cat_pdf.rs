@@ -21,10 +21,10 @@ fn main() -> Result<()> {
 
     let automatic_handle_letter_range = (b'A'..b'Z').map(char::from);
 
-    let is_handle = regex::Regex::new("^[A-Z]+[0-9]*$")?;
+    let is_file = regex::Regex::new(r"\.pdf$")?;
     let automatic_handles: HashMap<String, String> = pure_files
         .iter()
-        .filter(|s| !is_handle.is_match(s))
+        .filter(|s| is_file.is_match(s))
         .zip(automatic_handle_letter_range)
         .map(|(file, letter_handle)| (file.clone(), format!("AH{letter_handle}")))
         .collect();
@@ -37,7 +37,7 @@ fn main() -> Result<()> {
     let transformed_files = pure_files.iter().map(|f| {
         if let Some(handle) = automatic_handles.get(f) {
             handle
-        } else if is_handle.is_match(f) {
+        } else if !is_file.is_match(f) {
             f
         } else {
             panic!("Found file without automatic handle: {f}");
